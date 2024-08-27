@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Schedule</title>
+    <style>
+
+
+*{
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    font-family: 'Berkshire Swash', 'Bigshot One', sans-serif;
+} 
+
+#navbar {
+    background: #03285f;
+}
+
+#logo {
+    font-size: 30px;
+    font-weight: 900;
+    color: #f0f8ff;
+    text-shadow: 0px 1px 1px rgb(49, 49, 47);
+}
+
+#logo span {
+    color: #e67e22;
+}
+
+.nav-link {
+    font-size: 16px;
+    font-weight: 550;
+    color: #f0f8ff;
+    letter-spacing: 2px;
+    border-radius: 12px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #e67e22;
+    color: black;
+}
+
+.search-form input {
+    padding: 10px;
+    border-radius: 12px 0 0 12px;
+    border: none;
+}
+
+.search-form button {
+    background: #e67e22;
+    color: #f7f5f1;
+    width: 70px;
+    border: none;
+    padding: 10px;
+    border-radius: 0 12px 12px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-form button:hover {
+    background-color: #d35400;
+}
+
+
+.navbar-toggler {
+    color: #e67e22;
+    border: none;
+    outline: none;
+}
+
+.navbar-toggler-icon {
+    background-color: transparent;
+    color: #e67e22;
+    border-radius: 2px;
+    padding: 3px;
+}
+
+
+
+h1, p {
+text-align: center;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg" id="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="bookings.html" id="logo"><span>Stellar</span>Journeys</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">&#9776;</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="bookings.html">Booking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="travel-tips.html">Travel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about-us.html">About</a>
+                    </li>  
+                </ul>
+                <form class="form-inline search-form ml-auto">
+                    <input class="form-control" type="text" placeholder="Search">
+                    <button class="btn" type="button">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav> 
+    <table>
+        <thead>
+            <tr>
+                <th>Flight Number</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+            </tr>
+        </thead>
+        <tbody id="flight-schedule">
+    
+        </tbody>
+    </table>
+
+    <script>
+        const flights = [
+            { flightNumber: 'AA123', from: 'Cairo', to: 'Dubai', departure: '10:00 AM', arrival: '2:00 PM' },
+            { flightNumber: 'BA456', from: 'Riyadh', to: 'London', departure: '1:00 PM', arrival: '5:00 PM' },
+            { flightNumber: 'QR789', from: 'Doha', to: 'New York', departure: '3:00 PM', arrival: '11:00 PM' },
+            { flightNumber: 'EK101', from: 'Dubai', to: 'Sydney', departure: '8:00 AM', arrival: '8:00 PM' },
+            { flightNumber: 'LH202', from: 'Frankfurt', to: 'Tokyo', departure: '9:00 AM', arrival: '11:00 PM' }
+        ];
+
+        const flightSchedule = document.getElementById('flight-schedule');
+
+        function getRandomTime() {
+            const hours = Math.floor(Math.random() * 24);
+            const minutes = Math.floor(Math.random() * 60);
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            return `${formattedHours}:${formattedMinutes} ${period}`;
+        }
+
+        function updateFlightTimes() {
+            flightSchedule.innerHTML = '';
+            flights.forEach(flight => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${flight.flightNumber}</td>
+                    <td>${flight.from}</td>
+                    <td>${flight.to}</td>
+                    <td>${getRandomTime()}</td>
+                    <td>${getRandomTime()}</td>
+                `;
+                flightSchedule.appendChild(row);
+            });
+        }
+
+        setInterval(updateFlightTimes, 3000); // تحديث كل 3 ثواني
+        updateFlightTimes(); // تحديث أولي عند تحميل الصفحة
+    </script>
+</body>
+</html>
